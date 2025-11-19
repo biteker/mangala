@@ -2,133 +2,150 @@
 
 import React from 'react';
 
-// Bileşen artık 'roomData' (odanın tüm verisi), 'currentUser' (ben kimim?)
-// ve 'onPitClick' (hamle fonksiyonu) prop'larını alıyor.
+// Taşları render etme fonksiyonu (Aynen kalıyor)
+const renderStones = (count) => {
+  return Array.from({ length: count }).map((_, index) => (
+    <div key={index} className="stone"></div>
+  ));
+};
+
 function GameBoard({ roomData, currentUser, onPitClick }) {
   
-  const board = roomData.board; // Tahta durumu (p1_1: 4, ...)
-  const players = roomData.players;
-  const currentTurnPlayerId = roomData.turn; // 'player1' veya 'player2'
+  const { board, players, turn, status } = roomData;
 
-  // "Ben" (bu tarayıcıdaki kullanıcı) Player 1 miyim yoksa Player 2 mi?
-  let myPlayerRole = null;
-  if (currentUser?.uid === players.player1.uid) {
-    myPlayerRole = 'player1';
-  } else if (currentUser?.uid === players.player2.uid) {
-    myPlayerRole = 'player2';
-  }
-
-  // --- Deklaratif Taş Render Etme ---
-  const renderStones = (count) => {
-    return Array.from({ length: count }).map((_, index) => (
-      <div key={index} className="stone"></div>
-    ));
-  };
-
-  // --- Tıklama Yöneticisi ---
-  const handlePitClick = (pitIndex, pitOwnerRole) => {
-    // 1. Sıra bende mi? (Rolüm, sıradaki rolle eşleşiyor mu?)
-    if (myPlayerRole !== currentTurnPlayerId) return;
-
-    // 2. Kendi kuyuma mı tıkladım?
-    if (myPlayerRole !== pitOwnerRole) return;
-
-    // 3. Kuyu boş mu?
-    if (board[pitIndex] === 0) return;
-
-    // Kontroller tamamsa, App.jsx'e hamleyi bildir
-    onPitClick(pitIndex);
-  };
-
-  // --- Aktif/İnaktif Kuyu Stili ---
-  const getPitClassName = (pitIndex, pitOwnerRole) => {
-    const isMyTurn = myPlayerRole === currentTurnPlayerId;
+  // --- Aktif Kuyu Stili (Aynen kalıyor) ---
+  const getPitClassName = (pitIndex, pitOwnerRole, myPlayerRole) => {
+    const isMyTurn = myPlayerRole === turn;
     const isMyPit = myPlayerRole === pitOwnerRole;
     const hasStones = board[pitIndex] > 0;
 
     let pitClasses = 'pit';
     
-    // CSS Grid (sizin tasarımınız) için sıra sınıfları
-    if (pitOwnerRole === 'player2') pitClasses += ' top-row';
-    if (pitOwnerRole === 'player1') pitClasses += ' bottom-row';
-
-    // Tıklanabilirlik
     if (isMyTurn && isMyPit && hasStones) {
       pitClasses += ' active';
     } else {
       pitClasses += ' inactive';
     }
-
     return pitClasses;
   };
 
-  // --- Sıra Göstergesi Metni ---
-  let turnText, turnStyle;
-  if (roomData.status === 'finished') {
-    // Kazananı belirle
+  // --- Tıklama Yöneticisi (Aynen kalıyor) ---
+  const handlePitClick = (pitIndex, pitOwnerRole, myPlayerRole) => {
+    if (myPlayerRole !== turn) return;
+    if (myPlayerRole !== pitOwnerRole) return;
+    if (board[pitIndex] === 0) return;
+    onPitClick(pitIndex);
+  };
+
+  // --- YENİ: Skor tablosu için mantık ---
+  let myPlayerRole = null;
+  let myName = "Siz";
+  let opponentName = "Rakip";
+  
+  if (currentUser?.uid === players.player1.uid) {
+    myPlayerRole = 'player1';
+    myName = "Siz (Oyuncu 1)";
+    opponentName = "Rakip (Oyuncu 2)";
+  } else if (currentUser?.uid === players.player2.uid) {
+    myPlayerRole = 'player2';
+    myName = "Siz (Oyuncu 2)";
+    opponentName = "Rakip (Oyuncu 1)";
+  }
+
+  // Durum Metni
+  let statusText = '';
+  if (status === 'finished') {
     const winnerRole = roomData.winner;
     let winnerName = "Berabere!";
     if (winnerRole) {
       const winnerUID = players[winnerRole].uid;
       winnerName = (winnerUID === currentUser?.uid) ? "Siz Kazandınız!" : "Rakip Kazandı!";
     }
-    turnText = `Oyun Bitti: ${winnerName}`;
-    turnStyle = { background: 'rgba(255, 193, 7, 0.3)' };
-
-  } else if (currentTurnPlayerId === myPlayerRole) {
-    turnText = 'Sıra Sizde!';
-    turnStyle = { background: 'rgba(76, 175, 80, 0.3)' };
+    statusText = `Oyun Bitti: ${winnerName}`;
   } else {
-    turnText = 'Rakibin Sırası Bekleniyor...';
-    turnStyle = { background: 'rgba(33, 150, 243, 0.3)' };
+    statusText = (myPlayerRole === turn) ? 'Sıra Sizde!' : 'Rakibin Sırası Bekleniyor...';
   }
+
+  // Skorları ve isimleri rollere göre ayarla
+  const P1_Info = {
+    name: (myPlayerRole === 'player1') ? myName : opponentName,
+    score: board.p1_treasure
+  };
+  const P2_Info = {
+    name: (myPlayerRole === 'player2') ? myName : opponentName,
+    score: board.p2_treasure
+  };
 
 
   return (
-    <div className="game-preview">
-      {/* Sıra Göstergesi */}
-      <div className="turn-indicator" style={turnStyle}>
-        {turnText}
-      </div>
+    // YENİ: Referans HTML'e göre tam yapı
+    <div className="game-container">
       
-      {/* Oyun Tahtası */}
-      <div className="mangala-board" id="board">
-        {/* Hazine (P2 / Rakip) */}
-        <div className="treasure treasure-left" data-index="p2_treasure">
-          {renderStones(board.p2_treasure)}
+      {/* YENİ: Skor Tablosu */}
+      <div className="game-info">
+        <div className={`player-info ${turn === 'player2' ? 'active' : ''}`}>
+          <div className="player-name">{P2_Info.name}</div>
+          <div className="player-score">{P2_Info.score}</div>
         </div>
         
-        {/* Üst Sıra (P2 Kuyuları: p2_6'dan p2_1'e TERS) */}
+        <div className="game-status">{statusText}</div>
+        
+        <div className={`player-info ${turn === 'player1' ? 'active' : ''}`}>
+          <div className="player-name">{P1_Info.name}</div>
+          <div className="player-score">{P1_Info.score}</div>
+        </div>
+      </div>
+      
+      {/* YENİ: Oyun Tahtası Yapısı */}
+      <div className="mangala-board" id="board">
+        
+        {/* Hazine (P2 / Rakip) - (Referans yapı: .treasure-stones ve .treasure-label) */}
+        <div className="treasure treasure-left" data-index="p2_treasure">
+          <div className="treasure-stones">
+            {renderStones(board.p2_treasure)}
+          </div>
+          <div className="treasure-label">{board.p2_treasure}</div>
+        </div>
+        
+        {/* Üst Sıra (P2 Kuyuları) - (Referans yapı: .pit-container) */}
         {['p2_6', 'p2_5', 'p2_4', 'p2_3', 'p2_2', 'p2_1'].map((pitId) => (
-          <div 
-            key={pitId} 
-            className={getPitClassName(pitId, 'player2')}
-            data-index={pitId}
-            onClick={() => handlePitClick(pitId, 'player2')}
-          >
-            {renderStones(board[pitId])}
+          <div key={pitId} className="pit-container top-row">
+            <div className="pit-count">{board[pitId]}</div>
+            <div 
+              className={getPitClassName(pitId, 'player2', myPlayerRole)}
+              data-index={pitId}
+              onClick={() => handlePitClick(pitId, 'player2', myPlayerRole)}
+            >
+              {renderStones(board[pitId])}
+            </div>
           </div>
         ))}
         
         {/* Hazine (P1 / Ben) */}
         <div className="treasure treasure-right" data-index="p1_treasure">
-          {renderStones(board.p1_treasure)}
+          <div className="treasure-stones">
+            {renderStones(board.p1_treasure)}
+          </div>
+          <div className="treasure-label">{board.p1_treasure}</div>
         </div>
         
-        {/* Alt Sıra (P1 Kuyuları: p1_1'den p1_6'ya) */}
+        {/* Alt Sıra (P1 Kuyuları) */}
         {['p1_1', 'p1_2', 'p1_3', 'p1_4', 'p1_5', 'p1_6'].map((pitId) => (
-          <div 
-            key={pitId} 
-            className={getPitClassName(pitId, 'player1')}
-            data-index={pitId}
-            onClick={() => handlePitClick(pitId, 'player1')}
-          >
-            {renderStones(board[pitId])}
+          <div key={pitId} className="pit-container bottom-row">
+            <div className="pit-count">{board[pitId]}</div>
+            <div 
+              className={getPitClassName(pitId, 'player1', myPlayerRole)}
+              data-index={pitId}
+              onClick={() => handlePitClick(pitId, 'player1', myPlayerRole)}
+            >
+              {renderStones(board[pitId])}
+            </div>
           </div>
         ))}
       </div>
       
-      <p style={{ textAlign: 'center', opacity: 0.9, fontSize: '1.1rem' }}>
+      {/* Oda Kodunu koruyalım (estetik için) */}
+      <p style={{ textAlign: 'center', opacity: 0.9, fontSize: '1.1rem', marginTop: '1.5rem' }}>
         Oda Kodu: <strong style={{color: '#fff', background: 'rgba(0,0,0,0.2)', padding: '2px 6px', borderRadius: '4px'}}>{roomData.roomId}</strong>
       </p>
     </div>

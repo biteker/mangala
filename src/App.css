@@ -1,319 +1,425 @@
- * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+/* Referans HTML'den gelen temel stiller */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            color: #fff;
-            overflow-x: hidden;
-        }
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+    overflow-x: hidden;
+}
 
-        .particles {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            z-index: 0;
-            pointer-events: none;
-        }
+.particles {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    pointer-events: none;
+}
 
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            animation: float 15s infinite;
-        }
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    animation: float 15s infinite;
+}
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-100vh) translateX(50px); opacity: 0; }
-        }
+@keyframes float {
+    0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-100vh) translateX(50px); opacity: 0; }
+}
 
-        header {
-            position: relative;
-            z-index: 1;
-            padding: 2rem;
-            text-align: center;
-            background: rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(10px);
-        }
+header {
+    position: relative;
+    z-index: 1;
+    padding: 1.5rem;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+}
 
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 0.5rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-            animation: slideDown 0.8s ease-out;
-        }
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.3rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
 
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+.tagline {
+    font-size: 1rem;
+    opacity: 0.9;
+}
 
-        .tagline {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            animation: fadeIn 1s ease-out 0.3s both;
-        }
+main {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 0.9; }
-        }
+/* YENİ: Hem Home.jsx hem de GameBoard.jsx için ana sarmalayıcı */
+.game-container {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    max-width: 1000px;
+    width: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
 
-        main {
-            position: relative;
-            z-index: 1;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-        }
+/* YENİ: GameBoard için skor tablosu */
+.game-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    gap: 1rem;
+}
 
-        .game-preview {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            padding: 3rem;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            max-width: 900px;
-            width: 100%;
-            margin-bottom: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            animation: scaleIn 0.8s ease-out 0.5s both;
-        }
+.player-info {
+    flex: 1;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    text-align: center;
+}
 
-        @keyframes scaleIn {
-            from {
-                opacity: 0;
-                transform: scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
+.player-info.active {
+    background: rgba(76, 175, 80, 0.3);
+    box-shadow: 0 0 20px rgba(76, 175, 80, 0.5);
+}
 
-        .turn-indicator {
-            text-align: center;
-            font-size: 1.3rem;
-            margin-bottom: 1.5rem;
-            font-weight: bold;
-            padding: 0.8rem;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-        }
+.player-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
 
-        .mangala-board {
-            background: linear-gradient(145deg, #8b5a3c, #6d4c3d);
-            border-radius: 15px;
-            padding: 2rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            display: grid;
-            grid-template-columns: 80px repeat(6, 1fr) 80px;
-            grid-template-rows: 1fr 1fr;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
+.player-score {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #ffd700;
+}
 
-        .treasure {
-            background: linear-gradient(145deg, #a0723b, #7a5530);
-            border-radius: 10px;
-            padding: 1rem;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: center;
-            gap: 3px;
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
-            grid-row: 1 / 3;
-            min-height: 150px;
-        }
+.game-status {
+    text-align: center;
+    margin: 0 1rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    font-size: 1.1rem;
+    flex-basis: 300px; /* Ortadaki durum çubuğu için */
+}
 
-        .treasure-left {
-            grid-column: 1;
-        }
+/* YENİ: Oyun tahtası */
+.mangala-board {
+    background: linear-gradient(145deg, #5d4037, #4e342e);
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+    display: grid;
+    grid-template-columns: 100px repeat(6, 1fr) 100px;
+    grid-template-rows: 1fr 1fr;
+    gap: 1.2rem;
+    position: relative;
+}
 
-        .treasure-right {
-            grid-column: 8;
-        }
+/* YENİ: Hazine */
+.treasure {
+    background: linear-gradient(145deg, #8d6e63, #6d4c41);
+    border-radius: 25px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.4);
+    grid-row: 1 / 3;
+    border: 3px solid #4e342e;
+}
 
-        .pit {
-            background: radial-gradient(circle at 30% 30%, #4a3728, #2d2318);
-            border-radius: 50%;
-            aspect-ratio: 1;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: center;
-            gap: 3px;
-            padding: 8px;
-            box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.5);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
+.treasure-left {
+    grid-column: 1;
+}
 
-        .pit.active:hover {
-            transform: translateY(-3px);
-            box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.5), 0 6px 12px rgba(255, 215, 0, 0.3);
-        }
+.treasure-right {
+    grid-column: 8;
+}
 
-        .pit.inactive {
-            cursor: not-allowed;
-            opacity: 0.6;
-        }
+.treasure-stones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    max-width: 70px;
+    justify-content: center;
+    flex: 1;
+    align-content: center;
+}
 
-        .pit::before {
-            content: '';
-            position: absolute;
-            top: 10%;
-            left: 10%;
-            width: 30%;
-            height: 30%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
-            border-radius: 50%;
-            pointer-events: none;
-        }
+.treasure-label {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #ffd700;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    order: 2; /* Sayıyı taşların altına iter */
+}
 
-        .top-row {
-            grid-row: 1;
-        }
+/* YENİ: Kuyu sarmalayıcı */
+.pit-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
 
-        .bottom-row {
-            grid-row: 2;
-        }
+/* EKLENDİ: Grid yapısı için gerekli */
+.top-row { grid-row: 1; }
+.bottom-row { grid-row: 2; }
 
-        .stone {
-            width: 12px;
-            height: 12px;
-            background: radial-gradient(circle at 30% 30%, #f4e4c1, #c9a96e);
-            border-radius: 50%;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-            animation: stonePop 0.3s ease-out;
-        }
 
-        @keyframes stonePop {
-            0% { transform: scale(0); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
-        }
+/* YENİ: Kuyu üstü sayı */
+.pit-count {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #ffd700;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
 
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            max-width: 1200px;
-            width: 100%;
-            animation: fadeInUp 0.8s ease-out 0.8s both;
-        }
+/* YENİ: Kuyu */
+.pit {
+    background: radial-gradient(ellipse at 30% 30%, #6d4c41, #3e2723);
+    border: 3px solid #4e342e;
+    border-radius: 40px;
+    width: 100%;
+    aspect-ratio: 0.85; /* Referanstaki geometri */
+    display: flex;
+    flex-wrap: wrap;    
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 12px;
+    box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.6);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    align-content: center; /* EKLENDİ: Taşlar azaldığında dikeyde ortalar ve kutu boyutunu korur */
+    min-width: 50px; /* EKLENDİ: Taş sayısı azalsa bile küçülmeyi önler */
+    min-height: 60px; /* EKLENDİ: Taş sayısı azalsa bile küçülmeyi önler */
+}
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+.pit.active:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.6), 0 8px 20px rgba(255, 215, 0, 0.4);
+    border-color: #ffd700;
+}
 
-        .feature-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            border-radius: 15px;
-            padding: 2rem;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: all 0.3s ease;
-        }
+.pit.inactive {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
 
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-            background: rgba(255, 255, 255, 0.15);
-        }
+.pit::before {
+    content: '';
+    position: absolute;
+    top: 10%;
+    left: 20%;
+    width: 30%;
+    height: 20%;
+    background: radial-gradient(ellipse, rgba(255, 255, 255, 0.2), transparent);
+    border-radius: 50%;
+    pointer-events: none;
+}
 
-        .feature-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
+/* YENİ: Taş */
+.stone {
+    width: 10px;
+    height: 10px;
+    background: radial-gradient(circle at 35% 35%, #fff8dc, #daa520, #b8860b);
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.3);
+    animation: stonePop 0.3s ease-out;
+}
 
-        .feature-card h3 {
-            margin-bottom: 0.5rem;
-            font-size: 1.4rem;
-        }
+@keyframes stonePop {
+    0% { transform: scale(0); }
+    60% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
 
-        .feature-card p {
-            opacity: 0.9;
-            line-height: 1.6;
-        }
+/* YENİ: Buton (Eski .cta-button yerine) */
+.btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
+    border-radius: 25px;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
 
-        .cta-button {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
-            border: none;
-            padding: 1.2rem 3rem;
-            font-size: 1.2rem;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 10px 30px rgba(245, 87, 108, 0.4);
-            transition: all 0.3s ease;
-            margin-top: 2rem;
-            font-weight: bold;
-        }
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.6);
+}
 
-        .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(245, 87, 108, 0.6);
-        }
+.controls {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
 
-        footer {
-            position: relative;
-            z-index: 1;
-            text-align: center;
-            padding: 2rem;
-            background: rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(10px);
-        }
+/* Home.jsx için eski CSS'den taşınan stiller (yeni temaya uyarlandı) */
+.join-room-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+}
 
-        @media (max-width: 768px) {
-            h1 { font-size: 2rem; }
-            .tagline { font-size: 1rem; }
-            .mangala-board {
-                grid-template-columns: 60px repeat(6, 1fr) 60px;
-                gap: 0.5rem;
-                padding: 1rem;
-            }
-            .stone {
-                width: 8px;
-                height: 8px;
-            }
-            .treasure {
-                min-height: 100px;
-            }
-            .game-preview {
-                padding: 1.5rem;
-            }
-        }
+.room-input {
+    padding: 0.8rem 1.2rem;
+    font-size: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 25px;
+    background: rgba(0, 0, 0, 0.2);
+    color: #fff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    width: 200px;
+    text-align: center;
+}
+.room-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+.error-message {
+    color: #FF8A80;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+/* Home.jsx'teki LandingPage.jsx için stiller (yeni temaya uyarlandı) */
+.features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    width: 100%;
+}
+
+.feature-card {
+    background: rgba(255, 255, 255, 0.05); /* Daha sönük cam */
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 2rem;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.1);
+}
+.feature-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+.feature-card h3 {
+    margin-bottom: 0.5rem;
+    font-size: 1.4rem;
+}
+.feature-card p {
+    opacity: 0.9;
+    line-height: 1.6;
+}
+
+
+footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 1.5rem;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+/* Mobil uyumluluk */
+@media (max-width: 768px) {
+    h1 { font-size: 1.8rem; }
+    
+    .game-container {
+        padding: 1.5rem;
+    }
+    
+    /* Skor tablosunu dikey yapar */
+    .game-info {
+        flex-direction: column;
+    }
+    .player-info {
+        width: 100%;
+    }
+    .game-status {
+        width: 100%;
+        order: -1; /* Durum çubuğunu en üste alır */
+    }
+
+    .mangala-board {
+        grid-template-columns: 70px repeat(6, 1fr) 70px;
+        gap: 0.8rem;
+        padding: 1.5rem;
+    }
+    .stone {
+        width: 7px;
+        height: 7px;
+    }
+    .treasure {
+        padding: 1rem;
+        border-radius: 20px;
+    }
+    .treasure-label {
+        font-size: 1rem;
+    }
+    .player-score {
+        font-size: 1.5rem;
+    }
+    .pit {
+        padding: 8px;
+        gap: 2px;
+    }
+    .pit-count {
+        font-size: 0.9rem;
+    }
+    
+    .join-room-form {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    .room-input {
+        width: 100%;
+    }
+    .btn {
+        width: 100%;
+    }
+}
