@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import firestoreSpectator from '../utils/firestoreSpectator.js';
+import GameViewer from './GameViewer.jsx';
 
 export default function Spectator() {
   const [games, setGames] = useState([]);
+  const [selectedGameId, setSelectedGameId] = useState(null);
 
   useEffect(() => {
     let unsub = null;
@@ -16,6 +18,12 @@ export default function Spectator() {
       if (unsub) unsub();
     };
   }, []);
+
+  if (selectedGameId) {
+    return (
+      <GameViewer gameId={selectedGameId} onClose={() => setSelectedGameId(null)} />
+    );
+  }
 
   return (
     <div className="spectator">
@@ -42,7 +50,7 @@ export default function Spectator() {
                     </small>
                   )}
                 </div>
-                <button onClick={() => alert('İzlemeye başla: ' + g.id)}>
+                <button onClick={() => setSelectedGameId(g.id)}>
                   İzle →
                 </button>
               </li>
