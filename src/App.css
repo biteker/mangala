@@ -423,3 +423,283 @@ footer {
         width: 100%;
     }
 }
+
+/* ================================================
+   MODE SELECTOR STYLES
+================================================ */
+.mode-selector {
+    width: 100%;
+    margin-bottom: 2rem;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mode-nav {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.mode-btn {
+    padding: 0.8rem 1.5rem;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.8);
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+.mode-btn:hover {
+    border-color: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.mode-btn.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-color: #667eea;
+    color: white;
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+/* ================================================
+   TOURNAMENT MODE STYLES
+================================================ */
+.tournament {
+    width: 100%;
+    max-width: 900px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border-radius: 15px;
+    padding: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.tournament h2 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: #ffd700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.tournament > p {
+    margin-bottom: 1.5rem;
+    opacity: 0.9;
+    line-height: 1.6;
+}
+
+.tournament section {
+    margin-bottom: 2rem;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1.5rem;
+    border-radius: 10px;
+    border-left: 4px solid #667eea;
+}
+
+.tournament h3 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    color: #ffd700;
+}
+
+.tournament ul {
+    list-style: none;
+    margin-bottom: 1rem;
+}
+
+.tournament li {
+    background: rgba(255, 255, 255, 0.08);
+    padding: 0.8rem;
+    margin-bottom: 0.5rem;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tournament li button {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 0.5rem 1.2rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.tournament li button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+/* Form stilleri */
+form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: flex-start;
+}
+
+form input {
+    padding: 0.6rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.2);
+    color: white;
+    font-family: inherit;
+    flex: 1;
+    min-width: 150px;
+}
+
+form input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+form button {
+    padding: 0.6rem 1.5rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+form button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+/* ================================================
+   SPECTATOR MODE STYLES
+================================================ */
+.spectator {
+    width: 100%;
+    max-width: 900px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border-radius: 15px;
+    padding: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.spectator h2 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: #4fc3f7;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.spectator > p {
+    margin-bottom: 1.5rem;
+    opacity: 0.9;
+}
+
+.spectator section {
+    margin-top: 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1.5rem;
+    border-radius: 10px;
+    border-left: 4px solid #4fc3f7;
+}
+
+.spectator h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: #4fc3f7;
+}
+
+.game-list {
+    list-style: none;
+}
+
+.game-item {
+    background: rgba(255, 255, 255, 0.08);
+    padding: 1rem;
+    margin-bottom: 0.8rem;
+    border-radius: 8px;
+    border-left: 3px solid #4fc3f7;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 1rem;
+}
+
+.game-item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.game-item-info strong {
+    color: #ffd700;
+}
+
+.game-item-info small {
+    opacity: 0.7;
+    font-size: 0.85rem;
+}
+
+.game-item button {
+    padding: 0.5rem 1.2rem;
+    background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.game-item button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(79, 195, 247, 0.4);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 2rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-style: italic;
+}
+
+/* Responsive adjustments for tournament/spectator */
+@media (max-width: 768px) {
+    .tournament,
+    .spectator {
+        padding: 1.5rem;
+    }
+
+    .tournament h2,
+    .spectator h2 {
+        font-size: 1.5rem;
+    }
+
+    form {
+        flex-direction: column;
+    }
+
+    form input,
+    form button {
+        min-width: unset;
+        width: 100%;
+    }
+
+    .game-item {
+        grid-template-columns: 1fr;
+    }
+
+    .game-item button {
+        width: 100%;
+    }
+}

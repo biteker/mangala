@@ -20,16 +20,35 @@ export default function Spectator() {
   return (
     <div className="spectator">
       <h2>İzleyici Modu</h2>
-      <p>Canlı oyunları izlemek için burayı kullanın.</p>
+      <p>Canlı oyunları izlemek ve sonuçlarını takip etmek için burayı kullanın.</p>
 
       <section>
-        <h3>Canlı Oyunlar</h3>
-        {games.length === 0 && <p>Şu an canlı oyun yok.</p>}
-        <ul>
-          {games.map(g => (
-            <li key={g.id}>{g.id} — {g.status || 'playing'}</li>
-          ))}
-        </ul>
+        <h3>🎮 Canlı Oyunlar</h3>
+        {games.length === 0 ? (
+          <div className="empty-state">
+            <p>Şu an canlı oyun yok. Lütfen daha sonra tekrar deneyin.</p>
+          </div>
+        ) : (
+          <ul className="game-list">
+            {games.map(g => (
+              <li key={g.id} className="game-item">
+                <div className="game-item-info">
+                  <strong>Oyun ID: {g.id}</strong>
+                  <small>Durum: {g.status || 'Oyunda'}</small>
+                  {g.players && (
+                    <small>
+                      {g.players.player1?.displayName || 'Oyuncu 1'} vs{' '}
+                      {g.players.player2?.displayName || 'Beklemede'}
+                    </small>
+                  )}
+                </div>
+                <button onClick={() => alert('İzlemeye başla: ' + g.id)}>
+                  İzle →
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
       </section>
     </div>
   );
