@@ -26,6 +26,7 @@ import {
 
 // --- YENİ: Oyun Mantığımızı import ediyoruz ---
 import { calculateMove } from './utils/mangalaLogic';
+import { publishLiveGame } from './utils/firestoreSpectator.js';
 
 
 function App() {
@@ -108,6 +109,14 @@ function App() {
       };
       const roomRef = doc(db, "rooms", roomId);
       await setDoc(roomRef, newRoomData);
+      
+      // Spectator'a da yayınla
+      try {
+        await publishLiveGame(roomId, newRoomData);
+      } catch (err) {
+        console.warn('Live game publish failed:', err.message);
+      }
+      
       setRoomData(newRoomData); 
     } catch (error) {
       console.error("Oda kurulurken hata oluştu:", error);
@@ -150,6 +159,14 @@ function App() {
         ...currentRoomData, status: 'playing',
         players: { ...currentRoomData.players, player2: player2Data }
       };
+      
+      // Spectator'a da yayınla (oyun başladı)
+      try {
+        await publishLiveGame(roomId, updatedRoomData);
+      } catch (err) {
+        console.warn('Live game publish failed:', err.message);
+      }
+      
       setRoomData(updatedRoomData); 
     } catch (error) {
       console.error("Odaya katılırken hata oluştu:", error);
@@ -182,7 +199,7 @@ function App() {
       
       // 2. YENİ DURUMU FIREBASE'E GÖNDER
       const roomRef = doc(db, "rooms", roomData.roomId);
-      await updateDoc(roomRef, {
+      const updatePayload = {
         board: newBoard,
         turn: newTurn,
         status: newStatus,
@@ -191,7 +208,15 @@ function App() {
           player: myRole,
           pitId: pitId
         }
-      });
+      };
+      await updateDoc(roomRef, updatePayload);
+      
+      // Spectator'a da yayınla (oyun güncellendi)
+      try {
+        await publishLiveGame(roomData.roomId, { ...roomData, ...updatePayload });
+      } catch (err) {
+        console.warn('Live game update failed:', err.message);
+      }
       
       // 3. EKRAN GÜNCELLEMESİ
       // Biz hiçbir şey yapmıyoruz! 'onSnapshot' dinleyicimiz (yukarıda)
