@@ -8,6 +8,9 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import GameBoard from './components/GameBoard';
 import Home from './components/Home';
+import ModeSelector from './components/ModeSelector.jsx';
+import Tournament from './components/Tournament.jsx';
+import Spectator from './components/Spectator.jsx';
 
 // Firebase
 import { auth, db } from './firebaseConfig'; 
@@ -32,6 +35,7 @@ function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [mode, setMode] = useState('game'); // 'game' | 'tournament' | 'spectator'
 
   // Partikül Efekti (Değişiklik yok)
   useEffect(() => {
@@ -213,19 +217,37 @@ function App() {
       <Header />
 
       <main>
-        {!roomData ? (
-          <Home 
-            createRoom={createRoom}
-            joinRoom={joinRoom}
-            loading={loading}
-            error={error}
-          />
-        ) : (
-          <GameBoard 
-            roomData={roomData}
-            currentUser={user}
-            onPitClick={handleMove}
-          />
+        <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+          <ModeSelector currentMode={mode} onModeChange={setMode} />
+        </div>
+
+        {mode === 'game' && (
+          !roomData ? (
+            <Home 
+              createRoom={createRoom}
+              joinRoom={joinRoom}
+              loading={loading}
+              error={error}
+            />
+          ) : (
+            <GameBoard 
+              roomData={roomData}
+              currentUser={user}
+              onPitClick={handleMove}
+            />
+          )
+        )}
+
+        {mode === 'tournament' && (
+          <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+            <Tournament />
+          </div>
+        )}
+
+        {mode === 'spectator' && (
+          <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+            <Spectator />
+          </div>
         )}
       </main>
 
